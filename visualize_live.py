@@ -521,6 +521,15 @@ requestAnimationFrame(animate);
 </html>"""
 
 
+def export_html(npz_path, output_path):
+    """Export a self-contained HTML file that can be opened in any browser."""
+    data = load_and_prepare(npz_path)
+    data_json = json.dumps(data)
+    html = HTML_PAGE.replace("/*__DATA__*/null", data_json)
+    Path(output_path).write_text(html, encoding="utf-8")
+    print(f"Exported: {output_path}")
+
+
 def serve(npz_path, port):
     data = load_and_prepare(npz_path)
     data_json = json.dumps(data)
@@ -561,6 +570,7 @@ def main():
     parser = argparse.ArgumentParser(description="Live 3D IMU/pose visualizer (Foxglove-style)")
     parser.add_argument("npz_file", help="Path to NPZ file")
     parser.add_argument("--port", type=int, default=8888, help="HTTP port (default: 8888)")
+    parser.add_argument("--export", metavar="OUT", help="Export self-contained HTML file instead of serving")
     args = parser.parse_args()
 
     path = Path(args.npz_file)
@@ -569,7 +579,10 @@ def main():
         sys.exit(1)
 
     print(f"Loading {path} ...")
-    serve(str(path), args.port)
+    if args.export:
+        export_html(str(path), args.export)
+    else:
+        serve(str(path), args.port)
 
 
 if __name__ == "__main__":
