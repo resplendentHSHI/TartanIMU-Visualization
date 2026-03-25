@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# EgoVerse (cloned dependency — see README for setup)
+EgoVerse/
+
+# Generated visualizations
+*_dashboard.png
+*_trajectory_xy.png
+output_test/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+.claude/
